@@ -1,5 +1,5 @@
-function [ zerr,terr ] = getError( dsw,in)
-load('quantities.mat',...
+function [ zerr,terr ] = getError( dsw,in,out)
+load('../quantities.mat',...
       'myU','g','Delta','mui','muiErr','gErr')
 zb = [in.zb]';
 Q0 = [dsw.Q0]';
@@ -55,19 +55,19 @@ zb_err_fluid = dzb;
 
 
 zerr = zb_err_fluid + zb_err_ruler;
-terr = 0;
+terr = 1;
 
 %% Break Time Error
 
-% tb = time_break_measure;
-% tb_err_timer = 0.5 / 60; % (min)
-% 
-% Ufac_err     = Ufac_Dalton(1:40).*sqrt((gErr/g)^2 + (deltaErr/delta)^2 + (Q0err(1:40)./Q0(1:40)).^2 + (muiErr/mui)^2);
-% tb_err_fluid = tb' .* sqrt((Ufac_err./Ufac_Dalton(1:40)).^2 + (zb_err'./zb).^2);
-% 
-% tb_err = tb_err_timer + tb_err_fluid;
+tb = [out.tb];
+tb_err_timer = 0.5; % (s)
 
+U_err     = U.*sqrt((gErr/g)^2 + (dD/Delta)^2 + (dQ./Q0).^2 + (muiErr/mui)^2);
+tb_err_fluid = tb' .* sqrt((U_err./U).^2 + (zerr./zb).^2);
 
+terr = tb_err_timer + tb_err_fluid;
+
+terr = terr/60; %(min)
 
 end
 

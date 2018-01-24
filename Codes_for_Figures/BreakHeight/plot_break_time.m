@@ -1,0 +1,129 @@
+
+clear; close all;clc
+
+% load('quantities.mat');
+load('exp_vars.mat');
+dsw = dsw(8:end);
+in  =  in(8:end);
+out = out(8:end);
+load('num_vars.mat');
+ A0 = A0';
+nt0 = t0_actuals_dim_25'/60;
+
+
+% ----- figure settings -----
+
+fspec = '-dpng'; % output figure type
+res   = '-r600'; % output figure resolution 
+fname = 'BreakTime';
+units = 'inches';
+w    = 2.5;
+h    = 2.5;
+fs   = 9;
+lw   = 1;
+mark = 'o';
+nmark= '^';
+ms   = 5;
+mc   = {[ 0     0  200 ]./255,... % blue
+        [ 0   100    0 ]./255,... % green
+        [ 200   0  200 ]./255};   % pink
+
+
+% ----- stucts to vectors -----
+A  = [dsw.A0]';
+zb = [out.zb]';
+tb = [out.tb]';
+% ----- sort trials -----
+i15 = find([dsw.zb] == 15);
+i20 = find([dsw.zb] == 20);
+i25 = find([dsw.zb] == 25);
+
+
+[zerr,terr] = getError(dsw,in, out);
+
+fh = figure(99); set(gcf,'Color','White'); hold on;
+    plot([0,5],[in(i15(1)).tb,in(i15(end)).tb],'-',...
+                        'color',mc{1},...
+                        'linewidth',lw)
+    plot([0,5],[in(i20(1)).tb,in(i20(end)).tb],'--',...
+                        'color',mc{2},...
+                        'linewidth',lw)
+    plot([0,5],[in(i25(1)).tb,in(i25(end)).tb],'-.',...
+                        'color',mc{3},...
+                        'linewidth',lw)
+    p(4) = plot(A0(:,1),nt0(:,1),nmark,...
+                        'markeredgecolor','k',...
+                        'markerfacecolor',mc{1},...
+                        'markersize',ms);
+    p(5) = plot(A0(:,2),nt0(:,2),nmark,...
+                        'markeredgecolor','k',...
+                        'markerfacecolor',mc{2},...
+                        'markersize',ms);
+    p(6) = plot(A0(:,3),nt0(:,3),nmark,...
+                        'markeredgecolor','k',...
+                        'markerfacecolor',mc{3},...
+                        'markersize',ms);
+    errorbar(A,tb,terr,'r.');                    
+    p(1) = plot(A(i15),tb(i15),mark,...
+                        'markeredgecolor','k',...
+                        'markerfacecolor',mc{1},...
+                        'markersize',ms);
+    p(2) = plot(A(i20),tb(i20),mark,...
+                        'markeredgecolor','k',...
+                        'markerfacecolor',mc{2},...
+                        'markersize',ms);
+    p(3) = plot(A(i25),tb(i25),mark,...
+                        'markeredgecolor','k',...
+                        'markerfacecolor',mc{3},...
+                        'markersize',ms);
+        
+                    
+%  legstr = {sprintf('$z_b = %0.0f~cm$',in(i15(1)).tb),...
+%            sprintf('$z_b = %0.0f~cm$',in(i20(1)).tb),...
+%            sprintf('$z_b = %0.0f~cm$',in(i25(1)).tb)};
+%  legend(p(1:3),legstr,'interpreter','latex',...
+%                            'fontsize',fs,...
+%                            'Orientation','vertical',...
+%                            'location','northeast',...
+%                            'box','off')
+%  set(gca,'xlim',[min(A)-0.5,max(A)+0.5],...\
+%          'xtick',[min(A(i15))-0.5:0.5:max(A(i15))+0.5],...
+%          'ylim',[min([in.tb])-2,max([in.tb])+5],...
+%          'ytick',[min([in.tb]):5:max([in.tb])+5],...
+%          'TickLabelInterpreter','latex',...
+%          'fontsize',fs,...
+%          'box','on')
+ xlabel('$A_0$','fontsize',fs+2,...
+                'interpreter','latex')
+ ylabel('$t_b~[min]$','fontsize',fs+2,...
+                'interpreter','latex')
+
+%% Save the plot, scale appropriately
+    % ---- change figure window ---- 
+set(fh,'units',units,'color','white')
+pos_fh = get(fh,'position'); % figure window
+set(fh,'position',[pos_fh(1:2),w,h])
+
+% ---- change plot axes ----
+set(gca,'units',units,'fontsize',fs)
+pos_ah1 = get(gca,'position'); % plot axes
+set(gca,'position',[pos_ah1(1:2),pos_ah1(4),pos_ah1(4)])
+
+% % ---- change colorbar axes -----
+% set(ah2,'units',units,'fontsize',fs)
+% pos_ah2 = get(ah2,'position'); % colorbar
+% set(ah2,'position',[pos_ah2(1:2),pos_ah1(4),pos_ah2(4)])
+
+ 
+
+% ---- adjust paper size for printing ----
+set(fh,'PaperUnits',units,...
+       'PaperPosition',[0,0,w,h],...
+       'PaperSize',[w,h])
+
+   
+
+% print pdf
+print(fh,fname,fspec,res)
+            
+%             

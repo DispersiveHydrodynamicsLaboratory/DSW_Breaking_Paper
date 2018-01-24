@@ -39,7 +39,7 @@ i20 = find([dsw.zb] == 20);
 i25 = find([dsw.zb] == 25);
 
 
-[zerr,~] = getError(dsw,in);
+[zerr,~] = getError(dsw,in,out);
 
 fh = figure(99); set(gcf,'Color','White'); hold on;
     plot([0,5],[in(i15(1)).zb,in(i15(end)).zb],'-',...
