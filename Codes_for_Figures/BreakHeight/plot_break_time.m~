@@ -8,14 +8,14 @@ in  =  in(8:end);
 out = out(8:end);
 load('num_vars.mat');
  A0 = A0';
-nt0 = t0_actuals_dim_25'.*sqrt(A0)/60;
+nt0 = t0_actuals_dim_25'/60;
 
 
 % ----- figure settings -----
 
 fspec = '-dpng'; % output figure type
 res   = '-r600'; % output figure resolution 
-fname = 'BreakHeight';
+fname = 'BreakTime';
 units = 'inches';
 w    = 2.5;
 h    = 2.5;
@@ -86,44 +86,44 @@ fh = figure(99); set(gcf,'Color','White'); hold on;
 %                            'Orientation','vertical',...
 %                            'location','northeast',...
 %                            'box','off')
-%  set(gca,'xlim',[min(A)-0.5,max(A)+0.5],...\
-%          'xtick',[min(A(i15))-0.5:0.5:max(A(i15))+0.5],...
-%          'ylim',[min([in.tb])-2,max([in.tb])+5],...
-%          'ytick',[min([in.tb]):5:max([in.tb])+5],...
-%          'TickLabelInterpreter','latex',...
-%          'fontsize',fs,...
-%          'box','on')
+ set(gca,'xlim',[min(A)-0.5,max(A)+0.5],...\
+         'xtick',[min(A(i15))-0.5:0.5:max(A(i15))+0.5],...
+         'ylim',[1.25, 2.5],...
+         'ytick',1.3:0.2:2.3,...
+         'TickLabelInterpreter','latex',...
+         'fontsize',fs,...
+         'box','on')
  xlabel('$A_0$','fontsize',fs+2,...
                 'interpreter','latex')
- ylabel('$t_b~[cm]$','fontsize',fs+2,...
+ ylabel('$t_b~[min]$','fontsize',fs+2,...
                 'interpreter','latex')
 
-% %% Save the plot, scale appropriately
-%     % ---- change figure window ---- 
-% set(fh,'units',units,'color','white')
-% pos_fh = get(fh,'position'); % figure window
-% set(fh,'position',[pos_fh(1:2),w,h])
-% 
-% % ---- change plot axes ----
-% set(gca,'units',units,'fontsize',fs)
-% pos_ah1 = get(gca,'position'); % plot axes
-% set(gca,'position',[pos_ah1(1:2),pos_ah1(4),pos_ah1(4)])
-% 
-% % % ---- change colorbar axes -----
-% % set(ah2,'units',units,'fontsize',fs)
-% % pos_ah2 = get(ah2,'position'); % colorbar
-% % set(ah2,'position',[pos_ah2(1:2),pos_ah1(4),pos_ah2(4)])
-% 
-%  
-% 
-% % ---- adjust paper size for printing ----
-% set(fh,'PaperUnits',units,...
-%        'PaperPosition',[0,0,w,h],...
-%        'PaperSize',[w,h])
-% 
-%    
-% 
-% % print pdf
-% print(fh,fname,fspec,res)
-%             
+%% Save the plot, scale appropriately
+    % ---- change figure window ---- 
+set(fh,'units',units,'color','white')
+pos_fh = get(fh,'position'); % figure window
+set(fh,'position',[pos_fh(1:2),w,h])
+
+% ---- change plot axes ----
+set(gca,'units',units,'fontsize',fs)
+pos_ah1 = get(gca,'position'); % plot axes
+set(gca,'position',[pos_ah1(1:2),pos_ah1(4),pos_ah1(4)])
+
+% % ---- change colorbar axes -----
+% set(ah2,'units',units,'fontsize',fs)
+% pos_ah2 = get(ah2,'position'); % colorbar
+% set(ah2,'position',[pos_ah2(1:2),pos_ah1(4),pos_ah2(4)])
+
+ 
+
+% ---- adjust paper size for printing ----
+set(fh,'PaperUnits',units,...
+       'PaperPosition',[0,0,w,h],...
+       'PaperSize',[w,h])
+
+   
+
+% print pdf
+print(fh,fname,fspec,res)
+            
 %             
